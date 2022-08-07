@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import pl.bachorski.home.databinding.FragmentMainBinding
+import pl.bachorski.home.ui.main.recycler.DevicesAdapter
 
 class MainFragment : Fragment() {
 
@@ -29,6 +30,14 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
+
+        // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
+        binding.lifecycleOwner = this
+
+        // Giving the binding access to the OverviewViewModel
+        binding.viewModel = viewModel
+        binding.devicesList.adapter = DevicesAdapter()
+
         return binding.root
     }
 
@@ -41,7 +50,7 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.testApiButton.setOnClickListener {
-            viewModel.getDevices()
+            viewModel.getDevicesFromRepository()
         }
     }
 }
