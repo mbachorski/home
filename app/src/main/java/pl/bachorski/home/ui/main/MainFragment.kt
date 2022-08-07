@@ -1,13 +1,12 @@
 package pl.bachorski.home.ui.main
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import pl.bachorski.home.R
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import pl.bachorski.home.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
 
@@ -15,10 +14,13 @@ class MainFragment : Fragment() {
         fun newInstance() = MainFragment()
     }
 
+    private var _binding: FragmentMainBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var viewModel: MainViewModel
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
     }
 
@@ -26,17 +28,20 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val testApiButton = view.findViewById<Button>(R.id.testApiButton)
-        testApiButton.setOnClickListener {
+        binding.testApiButton.setOnClickListener {
             viewModel.getDevices()
         }
     }
-
-
 }
