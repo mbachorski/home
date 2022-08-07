@@ -27,6 +27,6 @@ interface HomeApiService {
     suspend fun getDevices(): List<JsonObject>
 }
 
-object HomeApi {
+object HomeApiRetrofitService {
     val retrofitService: HomeApiService by lazy { retrofit.create(HomeApiService::class.java) }
 }

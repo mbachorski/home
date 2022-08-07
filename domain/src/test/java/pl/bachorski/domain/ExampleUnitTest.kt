@@ -1,4 +1,4 @@
-package pl.bachorski.home.api
+package pl.bachorski.domain
 
 import org.junit.Test
 
