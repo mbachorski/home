@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import pl.bachorski.home.databinding.FragmentMainBinding
 import pl.bachorski.home.ui.main.recycler.DevicesAdapter
+import pl.bachorski.home.ui.main.recycler.DevicesAdapterCallback
 
 class MainFragment : Fragment() {
 
@@ -36,7 +37,15 @@ class MainFragment : Fragment() {
 
         // Giving the binding access to the OverviewViewModel
         binding.viewModel = viewModel
-        binding.devicesList.adapter = DevicesAdapter()
+        binding.devicesList.adapter = DevicesAdapter(object : DevicesAdapterCallback {
+            override fun turnOn(deviceId: Int) {
+                viewModel.turnOn(deviceId)
+            }
+
+            override fun turnOff(deviceId: Int) {
+                viewModel.turnOff(deviceId)
+            }
+        })
 
         return binding.root
     }
@@ -51,6 +60,14 @@ class MainFragment : Fragment() {
 
         binding.testApiButton.setOnClickListener {
             viewModel.getDevicesFromRepository()
+        }
+
+        binding.testApiButton1.setOnClickListener {
+            viewModel.turnOn(84)
+        }
+
+        binding.testApiButton2.setOnClickListener {
+            viewModel.turnOff(84)
         }
     }
 }

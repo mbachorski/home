@@ -2,14 +2,62 @@ package pl.bachorski.home.api.fakes
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import com.google.gson.reflect.TypeToken
+import pl.bachorski.domain.Room
 import pl.bachorski.home.api.HomeApiService
+import java.lang.reflect.Type
+
+inline fun <reified T> String.convertToListObject(): List<T>? {
+    val listType: Type = object : TypeToken<List<T?>?>() {}.type
+    return Gson().fromJson<List<T>>(
+        this,
+        listType
+    )
+}
 
 class FakeApiService : HomeApiService {
     override suspend fun getDevices(): List<JsonObject> {
         val jsonObject = Gson().fromJson<JsonObject>(testData, JsonObject::class.java)
         return listOf(jsonObject)
     }
+
+    override suspend fun getRooms(): List<Room> {
+        return roomsTestData.convertToListObject<Room>()!!
+    }
 }
+
+private val roomsTestData = """
+[    
+    {
+    "id": 21,
+    "name": "Wardrobe",
+    "sectionID": 6,
+    "icon": "room_guest",
+    "defaultSensors": {
+    "temperature": 0,
+    "humidity": 0,
+    "light": 0
+    },
+    "defaultThermostat": 0,
+    "sortOrder": 13,
+    "category": "other"
+    },
+    {
+    "id": 22,
+    "name": "My room",
+    "sectionID": 6,
+    "icon": "User1001",
+    "defaultSensors": {
+    "temperature": 0,
+    "humidity": 0,
+    "light": 0
+    },
+    "defaultThermostat": 0,
+    "sortOrder": 11,
+    "category": "other"
+    }
+]
+"""
 
 private val testData = """
 {
