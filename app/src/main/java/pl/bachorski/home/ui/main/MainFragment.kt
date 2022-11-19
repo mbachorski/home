@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import pl.bachorski.home.databinding.FragmentMainBinding
 import pl.bachorski.home.ui.main.recycler.DevicesAdapter
 import pl.bachorski.home.ui.main.recycler.DevicesAdapterCallback
@@ -20,6 +21,12 @@ class MainFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: MainViewModel
+
+    init {
+        lifecycleScope.launchWhenStarted {
+            viewModel.getDevicesFromRepository()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

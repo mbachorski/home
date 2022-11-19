@@ -11,7 +11,6 @@ class DeviceRepository(
         return if (devicesCache.hasDevices()) {
             devicesCache.devices
         } else {
-//            val devices = homeApi.getDevices()
             val devices = homeApi.getDevicesSortedByRooms()
             devicesCache.setDevices(devices)
             devices

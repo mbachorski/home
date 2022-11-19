@@ -58,6 +58,15 @@
 
         </LinearLayout>
 
-
+        <ProgressBar
+            android:id="@+id/listProgress"
+            app:progressApiStatus="@{viewModel.apiStatus}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            app:layout_constraintBottom_toTopOf="@id/testButtonsContainer"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

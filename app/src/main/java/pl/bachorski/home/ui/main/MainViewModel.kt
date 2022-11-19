@@ -13,15 +13,17 @@ import pl.bachorski.home.api.ApiAdapter
 import pl.bachorski.home.api.DevicesApiRetrofitService
 import pl.bachorski.home.api.HomeApiRetrofitService
 
+enum class ApiStatus {
+    IN_PROGRESS, SUCCESS, FAILURE
+}
+
 class MainViewModel : ViewModel() {
 
+    private var _status = MutableLiveData<ApiStatus>()
     private val _devices = MutableLiveData<List<DeviceBinarySwitch>>()
 
+    val apiStatus: LiveData<ApiStatus> = _status
     val devices: LiveData<List<DeviceBinarySwitch>> = _devices
-
-    init {
-//        getDevicesFromRepository()
-    }
 
     // TODO DI
     private val deviceRepository by lazy {
@@ -37,9 +39,12 @@ class MainViewModel : ViewModel() {
     }
 
     fun getDevicesFromRepository() {
+        _status.value = ApiStatus.IN_PROGRESS
         viewModelScope.launch {
             _devices.value = deviceRepository.getDevices() ?: listOf() // build error without ?:
             Log.v("HOME", devices.value.toString())
+            _status.value = ApiStatus.SUCCESS
+            // TODO catch failure and set proper status
         }
     }
 
